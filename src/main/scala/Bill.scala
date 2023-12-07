@@ -1,6 +1,10 @@
-case class Bill(val items: List[MenuItem]) {
+case class Bill(items: List[MenuItem], total: BigDecimal = 0) {
 
-  def calculateTotal: BigDecimal = {
-    items.map{item => item.cost}.sum
+  def calculatePreTaxTotal: BigDecimal = {
+    items.map{_.cost}.sum
+  }
+
+  def calculateServiceCharge: BigDecimal = {
+    null
   }
 }
