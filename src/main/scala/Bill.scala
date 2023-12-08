@@ -1,8 +1,8 @@
-case class Bill(items: List[MenuItem]) {
+case class Bill(items: List[MenuItem], loyalty: Loyalty = Loyalty()) {
 
   private val itemsLength = items.length
 
-  def calculatePreSCTotal: BigDecimal = {
+  def calculatePreSCBill: BigDecimal = {
     items.map{_.cost}.sum
   }
 
@@ -17,12 +17,20 @@ case class Bill(items: List[MenuItem]) {
     items.count(item => item.foodType == Drink) match {
       case this.itemsLength => 0
       case _ => items.count(item => item.temperature == Hot && item.foodType == Food) match {
-        case 0 => calculatePreSCTotal * 0.1
+        case 0 => calculatePreSCBill * 0.1
         case _ => items.count(item => item.temperature == Hot && item.foodType == Food && item.premium) match {
-          case 0 => BigDecimal(20) min calculatePreSCTotal * 0.2
-          case _ => BigDecimal(40) min calculatePreSCTotal * 0.25
+          case 0 => BigDecimal(20) min calculatePreSCBill * 0.2
+          case _ => BigDecimal(40) min calculatePreSCBill * 0.25
         }
       }
     }
+  }
+
+  def calculateLoyaltyDiscount: BigDecimal = {
+    null
+  }
+
+  def calculateBill: BigDecimal = {
+    calculatePreSCBill - calculateLoyaltyDiscount + calculateServiceCharge
   }
 }
