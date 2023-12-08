@@ -27,7 +27,7 @@ case class Bill(items: List[MenuItem], loyalty: Loyalty = Loyalty()) {
   }
 
   def calculateLoyaltyDiscount: BigDecimal = {
-    null
+    items.filter {_.premium == false}.map{_.cost}.sum * loyalty.discount
   }
 
   def calculateBill: BigDecimal = {

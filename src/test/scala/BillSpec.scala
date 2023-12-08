@@ -131,7 +131,7 @@ class BillSpec extends AnyFlatSpec with Matchers {
     val order: List[MenuItem] = List(SteakSandwich, SteakSandwich, Coffee, SteakSandwich, SteakSandwich, Coffee)
     val bill: Bill = Bill(order, Loyalty(12))
 
-    bill.calculateLoyaltyDiscount should be(BigDecimal(16))
+    bill.calculateLoyaltyDiscount should be(BigDecimal(4))
   }
 
   "A customer with 8 loyalty stars" should "receive a 20% discount (pre-service charge) NOT including premium items" in {
@@ -140,5 +140,12 @@ class BillSpec extends AnyFlatSpec with Matchers {
 
     bill.calculatePreSCBill should be (45)
     bill.calculateLoyaltyDiscount should be(BigDecimal(4))
+  }
+
+  "A customer with 8 loyalty stars" should "receive a 0% discount for a list of ONLY premium items" in {
+    val order: List[MenuItem] = List(Lobster, Lobster, Lobster)
+    val bill: Bill = Bill(order, Loyalty(8))
+
+    bill.calculateLoyaltyDiscount should be(BigDecimal(0))
   }
 }
