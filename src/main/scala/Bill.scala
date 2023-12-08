@@ -18,7 +18,10 @@ case class Bill(items: List[MenuItem]) {
       case this.itemsLength => 0
       case _ => items.count(item => item.temperature == Hot && item.foodType == Food) match {
         case 0 => calculatePreSCTotal * 0.1
-        case _ => BigDecimal(20) min calculatePreSCTotal * 0.2
+        case _ => items.count(item => item.temperature == Hot && item.foodType == Food && item.premium) match {
+          case 0 => BigDecimal(20) min calculatePreSCTotal * 0.2
+          case _ => BigDecimal(40) min calculatePreSCTotal * 0.25
+        }
       }
     }
   }
