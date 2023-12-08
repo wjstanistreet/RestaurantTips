@@ -63,4 +63,18 @@ class BillSpec extends AnyFlatSpec with Matchers {
 
     bill.calculateServiceCharge should be(BigDecimal(20))
   }
+
+  it should "be 25% if a premium item is included" in {
+    val order: List[MenuItem] = List(Lobster, Lobster, CheeseSandwich)
+    val bill: Bill = Bill(order)
+
+    bill.calculateServiceCharge should be(BigDecimal(13))
+  }
+
+  it should "be 25% if a premium item is included up to a max of £40" in {
+    val order: List[MenuItem] = List.fill(15)(Lobster)
+    val bill: Bill = Bill(order)
+
+    bill.calculateServiceCharge should be(BigDecimal(40))
+  }
 }

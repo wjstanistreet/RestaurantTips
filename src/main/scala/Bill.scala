@@ -14,7 +14,6 @@ case class Bill(items: List[MenuItem]) {
 //        else hotFoodSC
 //      } else calculatePreSCTotal * 0.1
 //    } else 0
-
     items.count(item => item.foodType == Drink) match {
       case this.itemsLength => 0
       case _ => items.count(item => item.temperature == Hot && item.foodType == Food) match {

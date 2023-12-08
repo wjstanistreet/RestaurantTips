@@ -3,4 +3,5 @@ case object Cola extends MenuItem {
   val temperature: Temperature = Cold
   val cost: BigDecimal = 0.5
   val foodType: FoodType = Drink
+  val premium: Boolean = false
 }

@@ -3,4 +3,5 @@ trait MenuItem {
   val temperature: Temperature
   val cost: BigDecimal
   val foodType: FoodType
+  val premium: Boolean
 }
