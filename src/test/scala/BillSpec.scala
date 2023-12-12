@@ -148,4 +148,25 @@ class BillSpec extends AnyFlatSpec with Matchers {
 
     bill.calculateLoyaltyDiscount should be(BigDecimal(0))
   }
+
+  "Calculating a bill" should "return the full amount: premium food - no discount" in {
+    val order: List[MenuItem] = List(Lobster, Lobster, Coffee, Cola, Cola)
+    val bill: Bill = Bill(order, Loyalty(2))
+
+    bill.calculateBill should be(65)
+  }
+
+  it should "return the full amount: premium food - 10% discount" in {
+    val order: List[MenuItem] = List(Lobster, Lobster, Coffee, Cola, Cola)
+    val bill: Bill = Bill(order, Loyalty(4))
+
+    bill.calculateBill should be(64.8)
+  }
+
+  it should "return the full amount: hot food - 20% discount" in {
+    val order: List[MenuItem] = List(SteakSandwich, SteakSandwich, Coffee, Coffee, CheeseSandwich)
+    val bill: Bill = Bill(order, Loyalty(8))
+
+    bill.calculateBill should be(BigDecimal(13))
+  }
 }

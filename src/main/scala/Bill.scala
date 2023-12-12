@@ -2,9 +2,7 @@ case class Bill(items: List[MenuItem], loyalty: Loyalty = Loyalty()) {
 
   private val itemsLength = items.length
 
-  def calculatePreSCBill: BigDecimal = {
-    items.map{_.cost}.sum
-  }
+  def calculatePreSCBill: BigDecimal = items.map{_.cost}.sum
 
   def calculateServiceCharge: BigDecimal = {
 //    if (items.map(item => item.foodType).contains(Food)) {
@@ -14,7 +12,7 @@ case class Bill(items: List[MenuItem], loyalty: Loyalty = Loyalty()) {
 //        else hotFoodSC
 //      } else calculatePreSCTotal * 0.1
 //    } else 0
-    items.count(item => item.foodType == Drink) match {
+    val unrounded: BigDecimal = items.count(item => item.foodType == Drink) match {
       case this.itemsLength => 0
       case _ => items.count(item => item.temperature == Hot && item.foodType == Food) match {
         case 0 => calculatePreSCBill * 0.1
@@ -24,13 +22,10 @@ case class Bill(items: List[MenuItem], loyalty: Loyalty = Loyalty()) {
         }
       }
     }
+    unrounded.setScale(2, BigDecimal.RoundingMode.HALF_EVEN)
   }
 
-  def calculateLoyaltyDiscount: BigDecimal = {
-    items.filter {_.premium == false}.map{_.cost}.sum * loyalty.discount
-  }
+  def calculateLoyaltyDiscount: BigDecimal = items.filter{_.premium == false}.map{_.cost}.sum * loyalty.discount
 
-  def calculateBill: BigDecimal = {
-    calculatePreSCBill - calculateLoyaltyDiscount + calculateServiceCharge
-  }
+  def calculateBill: BigDecimal = calculatePreSCBill - calculateLoyaltyDiscount + calculateServiceCharge
 }
