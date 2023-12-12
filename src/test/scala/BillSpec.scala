@@ -1,14 +1,14 @@
 import org.scalatest.flatspec._
 import org.scalatest.matchers.should.Matchers
 class BillSpec extends AnyFlatSpec with Matchers {
-  "a bill" should "have a list of items" in {
+  "A bill" should "have a list of items" in {
     val order: List[MenuItem] = List(Cola)
     val bill: Bill = Bill(order)
 
     bill.items.length should be(1)
   }
 
-  "calculating a bill's total" should "return a sum of the items: 1 item/1 type" in {
+  "Calculating a bill's total" should "return a sum of the items: 1 item/1 type" in {
       val order: List[MenuItem] = List(Cola)
       val bill: Bill = Bill(order)
 
@@ -36,7 +36,7 @@ class BillSpec extends AnyFlatSpec with Matchers {
     bill.calculatePreSCBill should be(BigDecimal(8.0))
   }
 
-  "service charge" should "be 0 if all items are drinks" in {
+  "Service charge" should "be 0 if all items are drinks" in {
     val order: List[MenuItem] = List(Cola, Coffee)
     val bill: Bill = Bill(order)
 
@@ -78,63 +78,63 @@ class BillSpec extends AnyFlatSpec with Matchers {
     bill.calculateServiceCharge should be(BigDecimal(40))
   }
 
-  "A customer with zero loyalty stars" should "receive no discount (pre-service charge)" in {
+  "A customer" should "receive no discount (pre-service charge) with zero loyalty stars " in {
     val order: List[MenuItem] = List(SteakSandwich, SteakSandwich, Coffee, SteakSandwich, SteakSandwich, Coffee)
     val bill: Bill = Bill(order, Loyalty(1))
 
     bill.calculateLoyaltyDiscount should be(BigDecimal(0))
   }
 
-  "A customer with one loyalty star" should "receive no discount (pre-service charge)" in {
+  it should "receive no discount (pre-service charge) with one loyalty star" in {
     val order: List[MenuItem] = List(SteakSandwich, SteakSandwich, Coffee, SteakSandwich, SteakSandwich, Coffee)
     val bill: Bill = Bill(order, Loyalty(1))
 
     bill.calculateLoyaltyDiscount should be(BigDecimal(0))
   }
 
-  "A customer with 2 loyalty stars" should "receive no discount (pre-service charge)" in {
+  it should "receive no discount (pre-service charge) with 2 loyalty stars" in {
     val order: List[MenuItem] = List(SteakSandwich, SteakSandwich, Coffee, SteakSandwich, SteakSandwich, Coffee)
     val bill: Bill = Bill(order, Loyalty(2))
 
     bill.calculateLoyaltyDiscount should be(BigDecimal(0))
   }
 
-  "A customer with 3 loyalty stars" should "receive a 7.5% discount (pre-service charge)" in {
+  it should "receive a 7.5% discount (pre-service charge) with 3 loyalty stars" in {
     val order: List[MenuItem] = List(SteakSandwich, SteakSandwich, Coffee, SteakSandwich, SteakSandwich, Coffee)
     val bill: Bill = Bill(order, Loyalty(3))
 
     bill.calculateLoyaltyDiscount should be(BigDecimal(1.5))
   }
 
-  "A customer with 4 loyalty stars" should "receive a 10% discount (pre-service charge)" in {
+  it should "receive a 10% discount (pre-service charge) with 4 loyalty stars" in {
     val order: List[MenuItem] = List(SteakSandwich, SteakSandwich, Coffee, SteakSandwich, SteakSandwich, Coffee)
     val bill: Bill = Bill(order, Loyalty(4))
 
     bill.calculateLoyaltyDiscount should be(BigDecimal(2))
   }
 
-  "A customer with 8 loyalty stars" should "receive a 20% discount (pre-service charge)" in {
+  it should "receive a 20% discount (pre-service charge) with 8 loyalty stars" in {
     val order: List[MenuItem] = List(SteakSandwich, SteakSandwich, Coffee, SteakSandwich, SteakSandwich, Coffee)
     val bill: Bill = Bill(order, Loyalty(8))
 
     bill.calculateLoyaltyDiscount should be(BigDecimal(4))
   }
 
-  "A customer with 10 loyalty stars" should "receive a 20% discount (pre-service charge)" in {
+  it should "receive a 20% discount (pre-service charge) with 10 loyalty stars" in {
     val order: List[MenuItem] = List(SteakSandwich, SteakSandwich, Coffee, SteakSandwich, SteakSandwich, Coffee)
     val bill: Bill = Bill(order, Loyalty(10))
 
     bill.calculateLoyaltyDiscount should be(BigDecimal(4))
   }
 
-  "A customer with 12 loyalty stars" should "receive a 20% discount (pre-service charge)" in {
+  it should "receive a 20% discount (pre-service charge) with 12 loyalty stars" in {
     val order: List[MenuItem] = List(SteakSandwich, SteakSandwich, Coffee, SteakSandwich, SteakSandwich, Coffee)
     val bill: Bill = Bill(order, Loyalty(12))
 
     bill.calculateLoyaltyDiscount should be(BigDecimal(4))
   }
 
-  "A customer with 8 loyalty stars" should "receive a 20% discount (pre-service charge) NOT including premium items" in {
+  it should "receive a 20% discount (pre-service charge) NOT including premium items with 8 loyalty stars" in {
     val order: List[MenuItem] = List(Lobster, SteakSandwich, SteakSandwich, Coffee, SteakSandwich, SteakSandwich, Coffee)
     val bill: Bill = Bill(order, Loyalty(8))
 
@@ -142,7 +142,7 @@ class BillSpec extends AnyFlatSpec with Matchers {
     bill.calculateLoyaltyDiscount should be(BigDecimal(4))
   }
 
-  "A customer with 8 loyalty stars" should "receive a 0% discount for a list of ONLY premium items" in {
+  it should "receive a 0% discount for a list of ONLY premium items with 8 loyalty stars" in {
     val order: List[MenuItem] = List(Lobster, Lobster, Lobster)
     val bill: Bill = Bill(order, Loyalty(8))
 
@@ -168,5 +168,40 @@ class BillSpec extends AnyFlatSpec with Matchers {
     val bill: Bill = Bill(order, Loyalty(8))
 
     bill.calculateBill should be(BigDecimal(13))
+  }
+
+  "A specified currency" should "change the value of bill by 1.26x if USD" in {
+    val order: List[MenuItem] = List(SteakSandwich, SteakSandwich, Coffee, Coffee, CheeseSandwich, CheeseSandwich)
+    val bill: Bill = Bill(order, Loyalty(2), "USD")
+
+    bill.calculateBill should be(BigDecimal(22.68))
+  }
+
+  it should "change the value of bill by 1.16x if EUR" in {
+    val order: List[MenuItem] = List(SteakSandwich, SteakSandwich, Coffee, Coffee, CheeseSandwich, CheeseSandwich)
+    val bill: Bill = Bill(order, Loyalty(2), "EUR")
+
+    bill.calculateBill should be(BigDecimal(20.88))
+  }
+
+  it should "change the value of bill by 182.71x if JPY" in {
+    val order: List[MenuItem] = List(SteakSandwich, SteakSandwich, Coffee, Coffee, CheeseSandwich, CheeseSandwich)
+    val bill: Bill = Bill(order, Loyalty(2), "JPY")
+
+    bill.calculateBill should be(BigDecimal(3288.78))
+  }
+
+  it should "change the value of bill by 9.02x if CNY" in {
+    val order: List[MenuItem] = List(SteakSandwich, SteakSandwich, Coffee, Coffee, CheeseSandwich, CheeseSandwich)
+    val bill: Bill = Bill(order, Loyalty(2), "CNY")
+
+    bill.calculateBill should be(BigDecimal(162.36))
+  }
+
+  it should "change the value of bill by 1.69x if SGD" in {
+    val order: List[MenuItem] = List(SteakSandwich, SteakSandwich, Coffee, Coffee, CheeseSandwich, CheeseSandwich)
+    val bill: Bill = Bill(order, Loyalty(2), "SGD")
+
+    bill.calculateBill should be(BigDecimal(30.42))
   }
 }

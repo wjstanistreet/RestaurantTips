@@ -1,4 +1,4 @@
-case class Bill(items: List[MenuItem], loyalty: Loyalty = Loyalty()) {
+case class Bill(items: List[MenuItem], loyalty: Loyalty = Loyalty(), currency: String = "GBP") {
 
   private val itemsLength = items.length
 
@@ -27,5 +27,5 @@ case class Bill(items: List[MenuItem], loyalty: Loyalty = Loyalty()) {
 
   def calculateLoyaltyDiscount: BigDecimal = items.filter{_.premium == false}.map{_.cost}.sum * loyalty.discount
 
-  def calculateBill: BigDecimal = calculatePreSCBill - calculateLoyaltyDiscount + calculateServiceCharge
+  def calculateBill: BigDecimal = Currencies.exchangeRates(currency) * (calculatePreSCBill - calculateLoyaltyDiscount + calculateServiceCharge)
 }
