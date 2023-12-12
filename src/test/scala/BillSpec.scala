@@ -1,3 +1,4 @@
+import menuitems.{CheeseSandwich, Coffee, Cola, Lobster, MenuItem, SteakSandwich}
 import org.scalatest.flatspec._
 import org.scalatest.matchers.should.Matchers
 class BillSpec extends AnyFlatSpec with Matchers {
@@ -172,35 +173,35 @@ class BillSpec extends AnyFlatSpec with Matchers {
 
   "A specified currency" should "change the value of bill by 1.26x if USD" in {
     val order: List[MenuItem] = List(SteakSandwich, SteakSandwich, Coffee, Coffee, CheeseSandwich, CheeseSandwich)
-    val bill: Bill = Bill(order, Loyalty(2), "USD")
+    val bill: Bill = Bill(order, Loyalty(), "USD")
 
     bill.calculateBill should be(BigDecimal(22.68))
   }
 
   it should "change the value of bill by 1.16x if EUR" in {
     val order: List[MenuItem] = List(SteakSandwich, SteakSandwich, Coffee, Coffee, CheeseSandwich, CheeseSandwich)
-    val bill: Bill = Bill(order, Loyalty(2), "EUR")
+    val bill: Bill = Bill(order, Loyalty(), "EUR")
 
     bill.calculateBill should be(BigDecimal(20.88))
   }
 
   it should "change the value of bill by 182.71x if JPY" in {
     val order: List[MenuItem] = List(SteakSandwich, SteakSandwich, Coffee, Coffee, CheeseSandwich, CheeseSandwich)
-    val bill: Bill = Bill(order, Loyalty(2), "JPY")
+    val bill: Bill = Bill(order, Loyalty(), "JPY")
 
     bill.calculateBill should be(BigDecimal(3288.78))
   }
 
   it should "change the value of bill by 9.02x if CNY" in {
     val order: List[MenuItem] = List(SteakSandwich, SteakSandwich, Coffee, Coffee, CheeseSandwich, CheeseSandwich)
-    val bill: Bill = Bill(order, Loyalty(2), "CNY")
+    val bill: Bill = Bill(order, Loyalty(), "CNY")
 
     bill.calculateBill should be(BigDecimal(162.36))
   }
 
   it should "change the value of bill by 1.69x if SGD" in {
     val order: List[MenuItem] = List(SteakSandwich, SteakSandwich, Coffee, Coffee, CheeseSandwich, CheeseSandwich)
-    val bill: Bill = Bill(order, Loyalty(2), "SGD")
+    val bill: Bill = Bill(order, Loyalty(), "SGD")
 
     bill.calculateBill should be(BigDecimal(30.42))
   }

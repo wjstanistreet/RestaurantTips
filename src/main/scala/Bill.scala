@@ -1,3 +1,5 @@
+import menuitems.{Drink, Food, Hot, MenuItem}
+
 case class Bill(items: List[MenuItem], loyalty: Loyalty = Loyalty(), currency: String = "GBP") {
 
   private val itemsLength = items.length

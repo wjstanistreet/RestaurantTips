@@ -1,3 +1,5 @@
-object Menu {
-  val items: Set[MenuItem] = Set(Cola, Coffee, CheeseSandwich, SteakSandwich, Lobster)
+import menuitems.{MenuItem, Theme}
+
+case class Menu(cuisine: String = "Regular") {
+  val items: Set[MenuItem] = Theme.cuisine(cuisine)
 }
