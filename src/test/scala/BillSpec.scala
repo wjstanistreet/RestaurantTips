@@ -1,6 +1,8 @@
 import menuitems.{CheeseSandwich, Coffee, Cola, Lobster, MenuItem, SteakSandwich}
 import org.scalatest.flatspec._
 import org.scalatest.matchers.should.Matchers
+
+import java.time.LocalTime
 class BillSpec extends AnyFlatSpec with Matchers {
   "A bill" should "have a list of items" in {
     val order: List[MenuItem] = List(Cola)
@@ -173,36 +175,58 @@ class BillSpec extends AnyFlatSpec with Matchers {
 
   "A specified currency" should "change the value of bill by 1.26x if USD" in {
     val order: List[MenuItem] = List(SteakSandwich, SteakSandwich, Coffee, Coffee, CheeseSandwich, CheeseSandwich)
-    val bill: Bill = Bill(order, Loyalty(), "USD")
+    val bill: Bill = Bill(order, currency = "USD")
 
     bill.calculateBill should be(BigDecimal(22.68))
   }
 
   it should "change the value of bill by 1.16x if EUR" in {
     val order: List[MenuItem] = List(SteakSandwich, SteakSandwich, Coffee, Coffee, CheeseSandwich, CheeseSandwich)
-    val bill: Bill = Bill(order, Loyalty(), "EUR")
+    val bill: Bill = Bill(order, currency = "EUR")
 
     bill.calculateBill should be(BigDecimal(20.88))
   }
 
   it should "change the value of bill by 182.71x if JPY" in {
     val order: List[MenuItem] = List(SteakSandwich, SteakSandwich, Coffee, Coffee, CheeseSandwich, CheeseSandwich)
-    val bill: Bill = Bill(order, Loyalty(), "JPY")
+    val bill: Bill = Bill(order, currency = "JPY")
 
     bill.calculateBill should be(BigDecimal(3288.78))
   }
 
   it should "change the value of bill by 9.02x if CNY" in {
     val order: List[MenuItem] = List(SteakSandwich, SteakSandwich, Coffee, Coffee, CheeseSandwich, CheeseSandwich)
-    val bill: Bill = Bill(order, Loyalty(), "CNY")
+    val bill: Bill = Bill(order, currency = "CNY")
 
     bill.calculateBill should be(BigDecimal(162.36))
   }
 
   it should "change the value of bill by 1.69x if SGD" in {
     val order: List[MenuItem] = List(SteakSandwich, SteakSandwich, Coffee, Coffee, CheeseSandwich, CheeseSandwich)
-    val bill: Bill = Bill(order, Loyalty(), "SGD")
+    val bill: Bill = Bill(order, currency = "SGD")
 
     bill.calculateBill should be(BigDecimal(30.42))
+  }
+
+  "A drink during happy hour" should "cost half the amount: only drinks" in {
+    val order: List[MenuItem] = List(Coffee, Coffee, Coffee, Coffee)
+    val bill: Bill = Bill(order, time = LocalTime.of(18, 0))
+
+    bill.calculateBill should be(BigDecimal(2))
+  }
+
+  it should "cost half the amount: mix of drinks and food" in {
+    val order: List[MenuItem] = List(Coffee, Coffee, Coffee, Coffee, CheeseSandwich, CheeseSandwich)
+    val bill: Bill = Bill(order, time = LocalTime.of(21, 0))
+
+    bill.calculateBill should be(BigDecimal(6.6))
+  }
+
+  "A drink not during happy hour" should
+    "cost the original amount" in {
+    val order: List[MenuItem] = List(Coffee, Coffee, Coffee, Coffee)
+    val bill: Bill = Bill(order, time = LocalTime.of(12, 0))
+
+    bill.calculateBill should be(BigDecimal(4))
   }
 }
