@@ -1,16 +1,25 @@
 import menuitems.{Drink, Food, Hot, MenuItem}
 import java.time.LocalTime
 
-case class Bill(items: List[MenuItem], loyalty: Loyalty = Loyalty(), currency: String = "GBP", time: LocalTime = LocalTime.now()) {
+case class Bill(
+                 items: List[MenuItem],
+                 loyalty: Loyalty = Loyalty(),
+                 currency: String = "GBP",
+                 time: LocalTime = LocalTime.now(),
+                 theme: String = "Regular",
+                 server: String = "John Smith") {
 
-  private val itemsLength = items.length
+  private val itemsLength: Int = items.length
+  val isHappyHour: Boolean = time.getHour >= 18 && time.getHour <= 21
 
-  def calculatePreSCBill: BigDecimal = time.getHour match {
-    case x if x >= 18 && x <= 21 => items.map(item =>
+  def calculatePreSCBill: BigDecimal = {
+    if (isHappyHour) happyHourTotal
+    else items.map(_.cost).sum
+  }
+
+  def happyHourTotal: BigDecimal = items.map(item =>
       if (item.foodType == Drink) item.cost / 2
       else item.cost).sum
-    case _ => items.map(_.cost).sum
-  }
 
   def calculateServiceCharge: BigDecimal = {
 //    if (items.map(item => item.foodType).contains(Food)) {

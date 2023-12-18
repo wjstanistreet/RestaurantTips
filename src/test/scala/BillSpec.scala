@@ -229,4 +229,14 @@ class BillSpec extends AnyFlatSpec with Matchers {
 
     bill.calculateBill should be(BigDecimal(4))
   }
+
+  "printing a receipt" should
+    "print a receipt" in {
+    val order: List[MenuItem] = List(Coffee, Coffee, Coffee, Coffee)
+    val bill: Bill = Bill(order, time = LocalTime.of(12, 0))
+
+    Printer.printReceipt(bill)
+
+    bill.calculateBill should be(BigDecimal(4))
+  }
 }
