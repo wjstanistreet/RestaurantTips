@@ -12,23 +12,17 @@ case class Bill(
   private val itemsLength: Int = items.length
   val isHappyHour: Boolean = time.getHour >= 18 && time.getHour <= 21
 
-  def calculatePreSCBill: BigDecimal = {
+  def calculatePreSCBill: BigDecimal =
     if (isHappyHour) happyHourTotal
-    else items.map(_.cost).sum
-  }
+    else itemSum
+
+  def itemSum: BigDecimal = items.map(_.cost).sum
 
   def happyHourTotal: BigDecimal = items.map(item =>
       if (item.foodType == Drink) item.cost / 2
       else item.cost).sum
 
   def calculateServiceCharge: BigDecimal = {
-//    if (items.map(item => item.foodType).contains(Food)) {
-//      if (items.filter(_.foodType == Food).map(item => item.temperature).contains(Hot)) {
-//        val hotFoodSC = calculatePreSCTotal * 0.2
-//        if (hotFoodSC > 20) 20
-//        else hotFoodSC
-//      } else calculatePreSCTotal * 0.1
-//    } else 0
     val unrounded: BigDecimal = items.count(item => item.foodType == Drink) match {
       case this.itemsLength => 0
       case _ => items.count(item => item.temperature == Hot && item.foodType == Food) match {

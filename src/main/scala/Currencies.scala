@@ -7,4 +7,15 @@ object Currencies {
     "CNY" -> 9.02,
     "SGD" -> 1.69,
   )
+
+  val symbol: Map[String, String] = Map(
+    "GBP" -> "£",
+    "USD" -> "$",
+    "EUR" -> "€",
+    "JPY" -> "¥",
+    "CNY" -> "¥",
+    "SGD" -> "$",
+  )
+
+  def getSymbol(currency: String): String = symbol(currency)
 }
