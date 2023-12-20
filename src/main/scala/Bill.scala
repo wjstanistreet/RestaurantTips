@@ -39,4 +39,6 @@ case class Bill(
   def calculateLoyaltyDiscount: BigDecimal = items.filter{_.premium == false}.map{_.cost}.sum * loyalty.discount
 
   def calculateBill: BigDecimal = Currencies.exchangeRates(currency) * (calculatePreSCBill - calculateLoyaltyDiscount + calculateServiceCharge)
+
+  def calculateTip: BigDecimal = 0.1 * calculateBill
 }

@@ -257,4 +257,25 @@ class BillSpec extends AnyFlatSpec with Matchers {
 
     bill.calculateBill should be(BigDecimal(6.3))
   }
+
+  "a tip" should "be 10% of the total bill: cold food and drinks" in {
+    val order: List[MenuItem] = List(Coffee, Coffee, Coffee, Coffee, CheeseSandwich, CheeseSandwich)
+    val bill: Bill = Bill(order)
+
+    bill.calculateTip should be(BigDecimal(0.88))
+  }
+
+  it should "be 10% of the total bill: drinks" in {
+    val order: List[MenuItem] = List(Coffee, Coffee, Coffee, Coffee)
+    val bill: Bill = Bill(order)
+
+    bill.calculateTip should be(BigDecimal(0.4))
+  }
+
+  it should "be 10% of the total bill: hot food and drinks" in {
+    val order: List[MenuItem] = List(SteakSandwich, SteakSandwich, Coffee, Coffee)
+    val bill: Bill = Bill(order)
+
+    bill.calculateTip should be(BigDecimal(1.32))
+  }
 }

@@ -8,7 +8,7 @@ object Currencies {
     "SGD" -> 1.69,
   )
 
-  val symbol: Map[String, String] = Map(
+  private val symbol: Map[String, String] = Map(
     "GBP" -> "£",
     "USD" -> "$",
     "EUR" -> "€",
